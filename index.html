@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Picker</title>
+    <style>
+        #root {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- React Code -->
+    <script type="text/babel">
+        function Color({ val, setVal,isValid,setIsValid}) {
+            const handleChange = (e) => {
+                const inputValue = e.target.value;
+                const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{5}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{3}|[A-Fa-f0-9]{2}|[A-Fa-f0-9]{1}|[A-Fa-f0-9]{0})$/;
+
+                if (hexRegex.test(inputValue)) {
+                    setVal(inputValue);
+                    setIsValid(true)
+                } else if (!inputValue) {
+                    setVal("#FFFFFF")
+                    setIsValid(true)
+                } else {
+                    setIsValid(false)
+                }
+            }
+           
+            return (
+                        <div>
+                            <label style={{fontSize: '25px'}} >Enter HEX Colour Code : </label>
+                            <input type="text" onChange={handleChange} style={{padding:'5px 10px',fontSize: '20px'}}/>
+                            {!isValid && <p style={{fontSize: '20px'}}>Invalid HEX colour code.</p>}
+                            <div 
+                                style={{
+                                    width: '150px',
+                                    height: '150px',
+                                    backgroundColor: val,
+                                    marginTop: '35px',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    border: '1px solid #000'
+                                }}
+                            ></div>
+                        </div>
+                    );
+        }
+
+        function App() {
+            const [val, setVal] = React.useState("#FFFFFF");
+            const [isValid, setIsValid] = React.useState(true);
+
+            
+            return (
+                <div>
+                    <h1 style={{marginBottom: '60px'}}>Color Picker</h1>
+                    <Color val={val} setVal={setVal} isValid={isValid} setIsValid={setIsValid} />
+                </div>
+            );
+        }
+
+        let reactRoot = ReactDOM.createRoot(document.getElementById("root"))
+        reactRoot.render(<App />);
+    </script>
+</body>
+</html>
